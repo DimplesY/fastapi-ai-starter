@@ -13,6 +13,16 @@ services:
         - action: rebuild
           path: ./pyproject.toml
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis/data:/data
+    command: /bin/sh -c 'redis-server --appendonly yes --requirepass 123456'
+
   rabbitmq:
     image: rabbitmq:4.1.0-management-alpine
     container_name: rabbitmq
