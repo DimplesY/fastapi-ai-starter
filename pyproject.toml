@@ -1,13 +1,18 @@
 [project]
-name = "compose-fastapi"
+name = "fastapi_celery_starter"
 version = "0.1.0"
-description = "Add your description here"
+description = "A fastapi template"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.16.1",
     "celery[librabbitmq]>=5.5.2",
     "fastapi[standard]>=0.115.12",
+    "greenlet>=3.2.3",
     "pre-commit>=4.2.0",
+    "psycopg[binary]>=3.2.9",
+    "pydantic>=2.11.4",
+    "pydantic-settings>=2.9.1",
     "sqlmodel>=0.0.24",
 ]
 
