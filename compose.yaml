@@ -36,3 +36,17 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: pgvector
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=db
+      - TZ=Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - $PWD/postgres/db/:/var/lib/postgresql/data

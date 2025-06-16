@@ -1,14 +1,16 @@
 from fastapi import APIRouter
-from app.deps import DbSession
-from app.models.user import User
-from sqlmodel import select, col
+from sqlmodel import select
+
+from app.api.util import DbSession
+from app.services.database.models import User
 
 test_router = APIRouter(tags=["test"])
 
 
 @test_router.get("/test1")
 async def test1(session: DbSession):
-    stmt = select(User).order_by(col(User.id).desc())
+    # settings_service = get_service(ServiceType.SETTINGS_SERVICE)
+    # return settings_service.settings
+    stmt = select(User)
     result = await session.execute(stmt)
-    users = result.scalars().all()
-    return [User.model_validate(user) for user in users]
+    return result.scalars().all()
