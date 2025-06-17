@@ -218,6 +218,7 @@ dependencies = [
     { name = "alembic" },
     { name = "celery" },
     { name = "fastapi", extra = ["standard"] },
+    { name = "fastapi-pagination" },
     { name = "greenlet" },
     { name = "pre-commit" },
     { name = "psycopg", extra = ["binary"] },
@@ -237,6 +238,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.16.1" },
     { name = "celery", extras = ["librabbitmq"], specifier = ">=5.5.2" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
+    { name = "fastapi-pagination", specifier = ">=0.13.2" },
     { name = "greenlet", specifier = ">=3.2.3" },
     { name = "pre-commit", specifier = ">=4.2.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.9" },
@@ -268,6 +270,20 @@ wheels = [
 [package.optional-dependencies]
 standard = [
     { name = "uvicorn", extra = ["standard"] },
+]
+
+[[package]]
+name = "fastapi-pagination"
+version = "0.13.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fastapi" },
+    { name = "pydantic" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/19/25/fc3c9ed9d99df279acdbf57da1a3a91ffceae9c087882cbe8a9cb1229b1e/fastapi_pagination-0.13.2.tar.gz", hash = "sha256:5e76f129aef706601b86114428ca3ff68715bfa3929bf4df8c7ed27561d7f661", size = 550389, upload-time = "2025-06-07T09:30:44.319Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d9/cb/cf2f10d4620b31a77705226c7292f39b4a191cef3485ea42561fc2e157d9/fastapi_pagination-0.13.2-py3-none-any.whl", hash = "sha256:d2ec66ffda5cd9c1d665521f3916b16ebbb15d5010a945449292540ef70c4d9a", size = 50404, upload-time = "2025-06-07T09:30:42.218Z" },
 ]
 
 [[package]]

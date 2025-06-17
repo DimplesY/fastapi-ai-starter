@@ -6,6 +6,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from app.api import router
 from contextlib import asynccontextmanager
+from fastapi_pagination import add_pagination
 
 from app.services.util import initialize_services
 
@@ -51,5 +52,7 @@ def create_app() -> FastAPI:
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
             content={"message": str(exc)},
         )
+
+    add_pagination(app)
 
     return app
