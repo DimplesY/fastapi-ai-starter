@@ -3,6 +3,7 @@ import inspect
 from app.services.base import Service
 from app.services.factory import ServiceFactory
 from app.services.schema import ServiceType
+from app.util.concurrency import KeyedMemoryLockManager
 
 
 class ServiceManager:
@@ -10,6 +11,7 @@ class ServiceManager:
         self.services: dict[str, Service] = {}
         self.factories: dict[str, ServiceFactory] = {}
         self.register_factories()
+        self.keyed_lock = KeyedMemoryLockManager()
 
     def register_factories(self) -> None:
         for factory in self.get_factories():
@@ -26,8 +28,9 @@ class ServiceManager:
         self.factories[service_name] = service_factory
 
     def get(self, service_name: ServiceType, default: ServiceFactory | None = None) -> Service:
-        if service_name not in self.services:
-            self._create_service(service_name, default)
+        with self.keyed_lock.lock(service_name):
+            if service_name not in self.services:
+                self._create_service(service_name, default)
         return self.services[service_name]
 
     def _create_service(self, service_name: ServiceType, default: ServiceFactory | None = None) -> None:
