@@ -1,7 +1,10 @@
-from typing import get_type_hints, TYPE_CHECKING
-from app.services.schema import ServiceType
+from __future__ import annotations
+
 import importlib
 import inspect
+from typing import get_type_hints, TYPE_CHECKING
+
+from app.services.schema import ServiceType
 
 if TYPE_CHECKING:
     from app.services.base import Service
@@ -15,11 +18,11 @@ class ServiceFactory:
         self.service_class = service_class
         self.dependencies = infer_service_types(self, import_all_services_into_a_dict())
 
-    def create(self, *args, **kwargs) -> "Service":
+    def create(self, *args, **kwargs) -> Service:
         raise self.service_class(*args, **kwargs)
 
 
-def infer_service_types(factory: ServiceFactory, available_services=None) -> list["ServiceType"]:
+def infer_service_types(factory: ServiceFactory, available_services=None) -> list[ServiceType]:
     create_method = factory.create
     type_hints = get_type_hints(create_method, globalns=available_services)
     service_types = []

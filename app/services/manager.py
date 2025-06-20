@@ -1,9 +1,20 @@
+from __future__ import annotations
+
 import importlib
 import inspect
-from app.services.base import Service
-from app.services.factory import ServiceFactory
-from app.services.schema import ServiceType
+from typing import TYPE_CHECKING
+
+from loguru import logger
 from app.util.concurrency import KeyedMemoryLockManager
+
+if TYPE_CHECKING:
+    from app.services.base import Service
+    from app.services.factory import ServiceFactory
+    from app.services.schema import ServiceType
+
+
+class NoFactoryRegisteredError(Exception):
+    pass
 
 
 class ServiceManager:
@@ -17,8 +28,8 @@ class ServiceManager:
         for factory in self.get_factories():
             try:
                 self.register_factory(factory)
-            except Exception:
-                print(f"Failed to register factory: {factory}")
+            except Exception:  # noqa: BLE001
+                logger.exception(f"Error initializing {factory}")
 
     def register_factory(
         self,
@@ -34,6 +45,7 @@ class ServiceManager:
         return self.services[service_name]
 
     def _create_service(self, service_name: ServiceType, default: ServiceFactory | None = None) -> None:
+        logger.debug(f"Create service {service_name}")
         self._validate_service_creation(service_name, default)
 
         factory = self.factories.get(service_name)
@@ -42,7 +54,7 @@ class ServiceManager:
             factory = default
         if factory is None:
             msg = f"No factory registered for {service_name}"
-            raise RuntimeError(msg)
+            raise NoFactoryRegisteredError(msg)
         for dependency in factory.dependencies:
             if dependency not in self.services:
                 self._create_service(dependency)
@@ -55,7 +67,7 @@ class ServiceManager:
     def _validate_service_creation(self, service_name: ServiceType, default: ServiceFactory | None = None) -> None:
         if service_name not in self.factories and default is None:
             msg = f"No factory registered for the service class '{service_name.name}'"
-            raise RuntimeError(msg)
+            raise NoFactoryRegisteredError(msg)
 
     @staticmethod
     def get_factories():
@@ -77,6 +89,7 @@ class ServiceManager:
                         break
 
             except Exception as exc:
+                logger.exception(exc)
                 msg = f"Could not initialize services. Please check your settings. Error in {name}."
                 raise RuntimeError(msg) from exc
 
