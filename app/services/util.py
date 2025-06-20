@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from app.services.schema import ServiceType
+from app.services.settings.service import SettingsService
 
 
 def get_service(service_type: ServiceType, default=None):
@@ -7,6 +10,12 @@ def get_service(service_type: ServiceType, default=None):
     if not service_manager.factories:
         service_manager.register_factories()
     return service_manager.get(service_type, default)
+
+
+def get_settings_service() -> SettingsService:
+    from app.services.settings.factory import SettingsServiceFactory
+
+    return get_service(ServiceType.SETTINGS_SERVICE, SettingsServiceFactory())
 
 
 def initialize_settings_service() -> None:
