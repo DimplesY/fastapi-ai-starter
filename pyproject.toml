@@ -8,7 +8,7 @@ dependencies = [
     "alembic>=1.16.1",
     "asgiref>=3.8.1",
     "celery-stubs==0.1.3",
-    "celery[librabbitmq]>=5.5.2",
+    "celery[librabbitmq,redis]>=5.5.2",
     "fastapi-pagination>=0.13.2",
     "fastapi[standard]>=0.115.12",
     "greenlet>=3.2.3",
