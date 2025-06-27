@@ -8,10 +8,9 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.deps import get_session
 from app.services.database.models.user import User
 from app.services.database.models.user.crud import get_user_by_id
-from app.services.util import get_settings_service
+from app.services.deps import get_settings_service, get_session
 
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
