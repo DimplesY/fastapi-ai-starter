@@ -8,7 +8,7 @@ A FastAPI template with Celery integration for asynchronous task processing.
 
 - 基于 JWT 的用户认证
 - PostgreSQL 数据库集成（通过 SQLAlchemy 和 SQLModel）
-- 异步任务调度（通过 RabbitMQ + Celery）
+- 异步任务调度（通过 Redis + Celery）
 - 自动化 Alembic 数据库迁移
 - 支持分页查询（通过 fastapi-pagination）
 
@@ -18,7 +18,7 @@ A FastAPI template with Celery integration for asynchronous task processing.
 - **FastAPI**
 - **SQLModel / Alembic**
 - **PostgreSQL**
-- **Celery (RabbitMQ broker)**
+- **Celery (Redis broker)**
 - **Loguru** 日志管理
 - **Passlib** 密码哈希加密
 - **PyJWT** 用户身份验证

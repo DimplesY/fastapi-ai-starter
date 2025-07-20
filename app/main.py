@@ -29,7 +29,7 @@ def get_lifespan():
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="fastapi celery starter",
+        title="fastapi-ai-starter",
         lifespan=get_lifespan(),
     )
 

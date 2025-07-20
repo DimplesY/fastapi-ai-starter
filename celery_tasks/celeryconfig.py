@@ -1,7 +1,5 @@
-mq_user = "guest"
-mq_password = "guest"
-broker_url = f"amqp://{mq_user}:{mq_password}@rabbitmq:5672//"
-# broker_url = f"amqp://{mq_user}:{mq_password}@localhost:5672//"
+broker_url = "redis://:123456@redis:6379/1"
+# broker_url = "redis://:123456@localhost:6379/1"
 result_backend = "redis://:123456@redis:6379/0"
 # result_backend = "redis://:123456@localhost:6379/0"
 accept_content = ["json", "pickle"]
