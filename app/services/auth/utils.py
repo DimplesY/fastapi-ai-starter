@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Annotated
+from typing import Annotated, Optional
 
 import jwt
 from asgiref.sync import sync_to_async
@@ -36,14 +36,14 @@ def create_access_token(data: dict, expires_delta: timedelta):
 
 
 @sync_to_async
-def jwt_decode(token: str) -> int | None:
+def jwt_decode(token: str) -> Optional[int]:
     try:
         settings_service = get_settings_service()
         payload = jwt.decode(token, settings_service.settings.jwt_secret, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
         return int(user_id)
     except jwt.ExpiredSignatureError:
-        pass
+        return  None
 
 
 async def get_current_user(
@@ -53,6 +53,8 @@ async def get_current_user(
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
     user_id = await jwt_decode(token)
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Not authenticated")
     user = await get_user_by_id(db, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Not found")

@@ -19,4 +19,4 @@ async def test1(session: DbSession):
 @router.get("/users", response_model=Page[User])
 async def get_users(session: DbSession) -> Page[User]:
     stmt = select(User)
-    return await paginate(session, stmt)
+    return await paginate(session, stmt) # type: ignore[arg-type]
