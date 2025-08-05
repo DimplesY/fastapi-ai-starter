@@ -88,12 +88,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 ```
 
-或使用 pip：
-
-```bash
-pip install -r requirements.txt
-```
-
 ### 3. 启动服务
 
 #### 方式一：Docker Compose（推荐）
@@ -140,7 +134,6 @@ docker-compose logs -f
 
 - **API 文档**: http://localhost:8000/docs
 - **ReDoc 文档**: http://localhost:8000/redoc
-- **API 健康检查**: http://localhost:8000/api/v1/test1
 
 ## 🔧 开发指南
 
