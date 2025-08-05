@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from http import HTTPStatus
+from urllib.parse import urlencode
 
 from fastapi import FastAPI, HTTPException
 from fastapi_pagination import add_pagination
@@ -43,8 +44,6 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    app.include_router(router)
-
     @app.exception_handler(Exception)
     async def exception_handler(_request: Request, exc: Exception):
         if isinstance(exc, HTTPException):
@@ -56,6 +55,18 @@ def create_app() -> FastAPI:
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
             content={"message": str(exc)},
         )
+
+    @app.middleware("http")
+    async def flatten_query_string_lists(request: Request, call_next):
+        flattened: list[tuple[str, str]] = []
+        for key, value in request.query_params.multi_items():
+            flattened.extend((key, entry) for entry in value.split(","))
+
+        request.scope["query_string"] = urlencode(flattened, doseq=True).encode("utf-8")
+
+        return await call_next(request)
+
+    app.include_router(router)
 
     add_pagination(app)
 

@@ -43,7 +43,7 @@ def jwt_decode(token: str) -> Optional[int]:
         user_id = payload.get("sub")
         return int(user_id)
     except jwt.ExpiredSignatureError:
-        return  None
+        return None
 
 
 async def get_current_user(
