@@ -12,3 +12,4 @@ rabbitmq
 .idea
 celerybeat-schedule.db
 redis
+postgres

@@ -17,7 +17,7 @@ def get_lifespan():
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
         try:
-            await initialize_services()
+            logger.log("app start running")
             yield
         except Exception as exc:
             logger.exception(exc)
