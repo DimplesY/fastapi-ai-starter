@@ -9,8 +9,8 @@ from sqlalchemy import exc
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     create_async_engine,
-    AsyncSession,
 )
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.services.base import Service
 from app.services.settings.service import SettingsService

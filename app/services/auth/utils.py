@@ -3,14 +3,14 @@ from typing import Annotated, Optional
 
 import jwt
 from asgiref.sync import sync_to_async
-from fastapi import Depends, Security, HTTPException
+from fastapi import Depends, HTTPException, Security
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.services.database.models.user import User
 from app.services.database.models.user.crud import get_user_by_id
-from app.services.deps import get_settings_service, get_session
+from app.services.deps import get_session, get_settings_service
 
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

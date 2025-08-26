@@ -5,6 +5,7 @@ import inspect
 from typing import TYPE_CHECKING
 
 from loguru import logger
+
 from app.util.concurrency import KeyedMemoryLockManager
 
 if TYPE_CHECKING:

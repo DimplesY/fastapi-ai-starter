@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.services.database.factory import DatabaseServiceFactory
 from app.services.database.service import DatabaseService

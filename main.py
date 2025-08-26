@@ -1,5 +1,6 @@
-from loguru import logger
 from multiprocessing import cpu_count
+
+from loguru import logger
 
 
 def get_number_of_workers(workers=None):

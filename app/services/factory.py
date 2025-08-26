@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import importlib
 import inspect
-from typing import get_type_hints, TYPE_CHECKING
+from typing import TYPE_CHECKING, get_type_hints
 
 from app.services.schema import ServiceType
 

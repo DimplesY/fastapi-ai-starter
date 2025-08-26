@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from app.services.factory import ServiceFactory
 from app.services.database.service import DatabaseService
+from app.services.factory import ServiceFactory
 from app.services.settings.service import SettingsService
 
 

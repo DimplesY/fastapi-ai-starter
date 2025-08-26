@@ -10,14 +10,13 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from app.api import router
-from app.services.util import initialize_services
 
 
 def get_lifespan():
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
         try:
-            logger.log("app start running")
+            logger.info("app start running")
             yield
         except Exception as exc:
             logger.exception(exc)
