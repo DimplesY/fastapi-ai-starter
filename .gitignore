@@ -13,3 +13,6 @@ rabbitmq
 celerybeat-schedule.db
 redis
 postgres
+logs/
+.mypy_cache/
+.ruff_cache/
