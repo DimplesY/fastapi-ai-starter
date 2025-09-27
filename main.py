@@ -1,6 +1,7 @@
 from multiprocessing import cpu_count
 
-from app.logging.logger import logger, configure
+from app.logging.logger import configure, logger
+
 
 def get_number_of_workers(workers=None):
     if workers == -1 or workers is None:

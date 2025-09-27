@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import importlib
 import inspect
 from typing import TYPE_CHECKING
 
-from loguru import logger
-
+from app.logging import logger
 from app.util.concurrency import KeyedMemoryLockManager
 
 if TYPE_CHECKING:
@@ -69,6 +69,21 @@ class ServiceManager:
         if service_name not in self.factories and default is None:
             msg = f"No factory registered for the service class '{service_name.name}'"
             raise NoFactoryRegisteredError(msg)
+
+    async def teardown(self) -> None:
+        """Teardown all the services."""
+        for service in list(self.services.values()):
+            if service is None:
+                continue
+            logger.debug(f"Teardown service {service.name}")
+            try:
+                teardown_result = service.teardown()
+                if asyncio.iscoroutine(teardown_result):
+                    await teardown_result
+            except Exception as exc:  # noqa: BLE001
+                logger.debug(f"Error in teardown of {service.name}", exc_info=exc)
+        self.services = {}
+        self.factories = {}
 
     @staticmethod
     def get_factories():

@@ -10,6 +10,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from app.api import router
+from app.services.util import teardown_services
 
 
 def get_lifespan():
@@ -22,6 +23,7 @@ def get_lifespan():
             logger.exception(exc)
             raise
         finally:
+            await teardown_services()
             await logger.complete()
 
     return lifespan

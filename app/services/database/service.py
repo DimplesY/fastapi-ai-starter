@@ -69,3 +69,7 @@ class DatabaseService(Service):
                 print(db_exc)
                 await session.rollback()
                 raise
+    
+    async def teardown(self) -> None:
+        """ Teardown the database engine. """
+        await self.engine.dispose()

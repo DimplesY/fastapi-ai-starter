@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app.services.deps import get_service
+from app.services.manager import service_manager
 from app.services.schema import ServiceType
 
 
@@ -12,3 +13,8 @@ def initialize_settings_service() -> None:
 
 async def initialize_services() -> None:
     initialize_settings_service()
+
+
+async def teardown_services() -> None:
+    """Teardown all the services."""
+    await service_manager.teardown()
