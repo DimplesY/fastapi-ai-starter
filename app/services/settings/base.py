@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     environment: Annotated[str, Field(strict=True, alias="ENVIRONMENT")]
     database_url: Annotated[str, Field(strict=True, alias="DATABASE_URL")]
     jwt_secret: Annotated[str, Field(strict=True, alias="JWT_SECRET")]
-    db_connection_settings: dict | None = {
+    db_connection_settings: dict = {
         "pool_size": 20,  # Match the pool_size above
         "max_overflow": 30,  # Match the max_overflow above
         "pool_timeout": 30,  # Seconds to wait for a connection from pool
