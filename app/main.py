@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
 from http import HTTPStatus
+from typing import AsyncGenerator, TypedDict
 from urllib.parse import urlencode
 
+import httpx
 from fastapi import FastAPI, HTTPException
 from fastapi_pagination import add_pagination
 from loguru import logger
@@ -13,12 +15,17 @@ from app.api import router
 from app.services.util import teardown_services
 
 
+class State(TypedDict):
+    http_client: httpx.AsyncClient
+
+
 def get_lifespan():
     @asynccontextmanager
-    async def lifespan(_app: FastAPI):
+    async def lifespan(_app: FastAPI) -> AsyncGenerator[State]:
         try:
             logger.info("app start running")
-            yield
+            async with httpx.AsyncClient() as http_client:
+                yield {"http_client": http_client}
         except Exception as exc:
             logger.exception(exc)
             raise

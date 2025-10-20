@@ -34,7 +34,7 @@ class DatabaseService(Service):
         """
         settings = self.settings_service.settings
         connection_kwargs = settings.db_connection_settings.copy()
-        
+
         return connection_kwargs
 
     def _create_engine(self) -> AsyncEngine:
@@ -60,7 +60,7 @@ class DatabaseService(Service):
                 print(db_exc)
                 await session.rollback()
                 raise
-    
+
     async def teardown(self) -> None:
-        """ Teardown the database engine. """
+        """Teardown the database engine."""
         await self.engine.dispose()

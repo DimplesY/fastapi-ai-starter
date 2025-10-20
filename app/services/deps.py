@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from typing import AsyncGenerator
+from typing import AsyncGenerator, cast
 
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.services.database.factory import DatabaseServiceFactory
 from app.services.database.service import DatabaseService
 from app.services.schema import ServiceType
 from app.services.settings.service import SettingsService
@@ -20,12 +19,12 @@ def get_service(service_type: ServiceType, default=None):
 
 def get_settings_service() -> SettingsService:
     from app.services.settings.factory import SettingsServiceFactory
-
-    return get_service(ServiceType.SETTINGS_SERVICE, SettingsServiceFactory())
+    return cast(SettingsService, get_service(ServiceType.SETTINGS_SERVICE, SettingsServiceFactory()))
 
 
 def get_db_service() -> DatabaseService:
-    return get_service(ServiceType.DATABASE_SERVICE, DatabaseServiceFactory())
+    from app.services.database.factory import DatabaseServiceFactory
+    return cast(DatabaseService, get_service(ServiceType.DATABASE_SERVICE, DatabaseServiceFactory()))
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
