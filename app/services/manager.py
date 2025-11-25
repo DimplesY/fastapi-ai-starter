@@ -101,7 +101,7 @@ class ServiceManager:
 
                 for _, obj in inspect.getmembers(module, inspect.isclass):
                     if issubclass(obj, ServiceFactory) and obj is not ServiceFactory:
-                        factories.append(obj())
+                        factories.append(obj())  # type: ignore
                         break
 
             except Exception as exc:

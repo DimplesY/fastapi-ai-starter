@@ -13,7 +13,7 @@ class SettingsService(Service):
 
     @classmethod
     def initialize(cls) -> SettingsService:
-        settings = Settings()
+        settings = Settings()  # type: ignore
         return cls(settings)
 
     def set(self, key, value):

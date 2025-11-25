@@ -19,11 +19,13 @@ def get_service(service_type: ServiceType, default=None):
 
 def get_settings_service() -> SettingsService:
     from app.services.settings.factory import SettingsServiceFactory
+
     return cast(SettingsService, get_service(ServiceType.SETTINGS_SERVICE, SettingsServiceFactory()))
 
 
 def get_db_service() -> DatabaseService:
     from app.services.database.factory import DatabaseServiceFactory
+
     return cast(DatabaseService, get_service(ServiceType.DATABASE_SERVICE, DatabaseServiceFactory()))
 
 
