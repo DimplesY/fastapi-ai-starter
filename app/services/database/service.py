@@ -5,12 +5,8 @@ from typing import AsyncGenerator
 
 import sqlalchemy as sa
 from loguru import logger
-from sqlalchemy import exc
-from sqlalchemy.ext.asyncio import (
-    AsyncEngine,
-    create_async_engine,
-)
-from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
+from sqlmodel.ext.asyncio.session import AsyncSession as SQLModelAsyncSession
 
 from app.services.base import Service
 from app.services.settings.service import SettingsService
@@ -25,6 +21,11 @@ class DatabaseService(Service):
         self.settings_service = settings_service
         self.database_url: str = settings_service.settings.database_url
         self.engine = self._create_engine()
+        self.async_session_maker = async_sessionmaker(
+            self.engine,
+            class_=SQLModelAsyncSession,
+            expire_on_commit=False,
+        )
 
     def _build_connection_kwargs(self):
         """Build connection kwargs by merging deprecated settings with db_connection_settings.
@@ -52,14 +53,9 @@ class DatabaseService(Service):
         return create_async_engine(self.database_url, **kwargs)
 
     @asynccontextmanager
-    async def with_session(self) -> AsyncGenerator[AsyncSession, None]:
-        async with AsyncSession(self.engine, expire_on_commit=False) as session:
-            try:
-                yield session
-            except exc.SQLAlchemyError as db_exc:
-                print(db_exc)
-                await session.rollback()
-                raise
+    async def with_session(self) -> AsyncGenerator[SQLModelAsyncSession, None]:
+        async with self.async_session_maker() as session:
+            yield session
 
     async def teardown(self) -> None:
         """Teardown the database engine."""

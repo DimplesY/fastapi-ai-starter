@@ -1,6 +1,6 @@
 from multiprocessing import cpu_count
 
-from app.logging.logger import configure, logger
+from app.logging.logger import logger
 
 
 def get_number_of_workers(workers=None):
@@ -13,14 +13,14 @@ def get_number_of_workers(workers=None):
 if __name__ == "__main__":
     import uvicorn
 
-    configure()
+    # configure()
 
     uvicorn.run(
         "app.main:create_app",
         host="0.0.0.0",
         port=8000,
         # workers=get_number_of_workers(),
-        log_level="error",
+        log_level="info",
         reload=False,
         loop="asyncio",
     )

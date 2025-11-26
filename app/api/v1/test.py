@@ -4,6 +4,7 @@ from fastapi_pagination.ext.sqlmodel import apaginate
 from sqlmodel import select
 
 from app.api.util import DbSession
+from app.logging.logger import logger
 from app.services.database.models import User
 
 router = APIRouter(tags=["test"])
@@ -13,7 +14,10 @@ router = APIRouter(tags=["test"])
 async def test1(session: DbSession):
     stmt = select(User)
     result = await session.exec(stmt)
-    return result.all()
+
+    users = result.all()
+    logger.debug(f"Fetched {len(users)} users from the database.")
+    return users
 
 
 @router.get("/users", response_model=Page[User])

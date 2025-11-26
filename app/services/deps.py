@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager, suppress
 from typing import AsyncGenerator, cast
 
+from sqlalchemy.exc import InvalidRequestError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.services.database.service import DatabaseService
@@ -29,6 +31,19 @@ def get_db_service() -> DatabaseService:
     return cast(DatabaseService, get_service(ServiceType.DATABASE_SERVICE, DatabaseServiceFactory()))
 
 
-async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    async with get_db_service().with_session() as session:
+async def injectable_session_scope():
+    async with session_scope() as session:
         yield session
+
+
+@asynccontextmanager
+async def session_scope() -> AsyncGenerator[AsyncSession, None]:
+    session = get_db_service().session
+    try:
+        yield session
+        await session.commit()
+    except Exception:
+        if session.is_active:
+            with suppress(InvalidRequestError):
+                await session.rollback()
+        raise

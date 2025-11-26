@@ -10,7 +10,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.services.database.models.user import User
 from app.services.database.models.user.crud import get_user_by_id
-from app.services.deps import get_session, get_settings_service
+from app.services.deps import get_settings_service, injectable_session_scope
 
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -48,7 +48,7 @@ def jwt_decode(token: str) -> Optional[int]:
 
 async def get_current_user(
     token: Annotated[str, Security(oauth2_login)],
-    db: Annotated[AsyncSession, Depends(get_session)],
+    db: Annotated[AsyncSession, Depends(injectable_session_scope)],
 ) -> User:
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
