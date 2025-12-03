@@ -13,7 +13,9 @@ def get_number_of_workers(workers=None):
 if __name__ == "__main__":
     import uvicorn
 
-    # configure()
+    from app.logging import configure
+
+    configure()
 
     uvicorn.run(
         "app.main:create_app",

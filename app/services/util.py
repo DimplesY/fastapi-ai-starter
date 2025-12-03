@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.services.database.utils import initialize_database
 from app.services.deps import get_service
 from app.services.manager import service_manager
 from app.services.schema import ServiceType
@@ -12,7 +13,7 @@ def initialize_settings_service() -> None:
 
 
 async def initialize_services() -> None:
-    initialize_settings_service()
+    await initialize_database()
 
 
 async def teardown_services() -> None:

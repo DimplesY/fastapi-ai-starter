@@ -1,5 +1,12 @@
 {
   "cSpell.words": [
     "apaginate"
-  ]
+  ],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+  }
 }
